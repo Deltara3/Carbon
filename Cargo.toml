@@ -1,0 +1,12 @@
+[package]
+name = "carbon"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+eframe = "0.22.0"
+rand = "0.8.5"
+tinyaudio = "0.1.2"
+rfd = "0.11.4"
