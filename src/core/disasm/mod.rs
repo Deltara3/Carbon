@@ -1,2 +1,1 @@
-mod chip8;
-pub use chip8::chip8;
+pub mod chip8;

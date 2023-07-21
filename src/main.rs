@@ -1,4 +1,6 @@
 use carbon::core::ui::app::Carbon;
+use carbon::core::disasm;
+use carbon::core::rom;
 
 fn main() -> Result<(), eframe::Error> {
     let options = eframe::NativeOptions {

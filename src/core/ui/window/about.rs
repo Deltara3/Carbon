@@ -1,12 +1,12 @@
 use eframe::egui;
 use eframe::egui::os::OperatingSystem;
 use egui::special_emojis::{OS_WINDOWS, OS_APPLE, OS_LINUX};
-use crate::core::ui::State;
+use crate::core::ui::WindowState;
 use crate::VERSION;
 
-pub fn render(state: &mut State, ctx: &egui::Context) {
+pub fn render(window_state: &mut WindowState, ctx: &egui::Context) {
     egui::Window::new("ℹ About")
-        .open(&mut state.about)
+        .open(&mut window_state.about)
         .resizable(false)
         .collapsible(false)
         .show(ctx, |ui| {

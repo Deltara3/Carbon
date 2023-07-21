@@ -1,10 +1,10 @@
 use eframe::egui;
-use crate::core::ui::State;
+use crate::core::ui::{State, WindowState};
 use crate::core::System;
 
-pub fn render(state: &mut State, ctx: &egui::Context) {
+pub fn render(state: &mut State, window_state: &mut WindowState, ctx: &egui::Context) {
     egui::Window::new("⊗ Uh-oh!")
-        .open(&mut state.uhoh)
+        .open(&mut window_state.uhoh)
         .resizable(false)
         .collapsible(false)
         .show(ctx, |ui| {

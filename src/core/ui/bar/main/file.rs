@@ -1,11 +1,11 @@
 use eframe::egui;
-use crate::core::ui::State;
+use crate::core::ui::{State, WindowState};
 use rfd::FileDialog;
 use crate::core::rom::{RomType, detect};
 use crate::core::console::chip8::Chip8;
 use crate::core::System;
 
-pub fn render(state: &mut State, ui: &mut egui::Ui, frame: &mut eframe::Frame) {
+pub fn render(state: &mut State, window_state: &mut WindowState, ui: &mut egui::Ui, frame: &mut eframe::Frame) {
     ui.menu_button("🗄 File", |ui| {
         if ui.button("📂 Open").clicked() {
             let load = FileDialog::new()
@@ -56,6 +56,4 @@ pub fn render(state: &mut State, ui: &mut egui::Ui, frame: &mut eframe::Frame) {
 
         if ui.button("⎆ Quit").clicked() { frame.close(); }
     });
-
-    if ui.button("ℹ About").clicked() { state.about = true; }
 }

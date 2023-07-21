@@ -7,6 +7,7 @@ edition = "2021"
 
 [dependencies]
 eframe = "0.22.0"
+egui_extras = "0.22.0"
 rand = "0.8.5"
 tinyaudio = "0.1.2"
 rfd = "0.11.4"

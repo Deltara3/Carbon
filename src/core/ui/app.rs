@@ -1,16 +1,18 @@
 use eframe::egui;
-use crate::core::ui::State;
+use crate::core::ui::{State, WindowState};
 use crate::core::ui::bar;
 use crate::core::ui::window;
 
 pub struct Carbon {
-    state: State
+    state: State,
+    window_state: WindowState
 }
 
 impl Default for Carbon {
     fn default() -> Carbon {
         return Carbon {
-            state: State::new()
+            state: State::new(),
+            window_state: WindowState::new()
         }
     }
 }
@@ -22,10 +24,10 @@ impl eframe::App for Carbon {
         visual.popup_shadow = egui::epaint::Shadow::NONE;
         ctx.set_visuals(visual);
 
-        bar::main(&mut self.state, ctx, frame);
+        bar::main(&mut self.state, &mut self.window_state, ctx, frame);
 
         egui::CentralPanel::default().show(ctx, |ui| {
-            window::render(&mut self.state, ctx);
+            window::render(&mut self.state, &mut self.window_state, ctx);
             
             let size = frame.info().window_info.size;
             let paint = ui.painter();
@@ -33,7 +35,7 @@ impl eframe::App for Carbon {
             if let Some(ref mut chip) = &mut self.state.chip.console {
                 if chip.operror {
                     self.state.emulating = false;
-                    self.state.uhoh = true;
+                    self.window_state.uhoh = true;
                 }
 
                 if self.state.emulating {

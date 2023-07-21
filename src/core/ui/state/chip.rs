@@ -22,7 +22,7 @@ impl ChipState {
             last: last,
             cps: 8,
             fixed_cps: 8.0,
-            colors: [Color32::BLACK, Color32::WHITE] 
+            colors: [Color32::BLACK, Color32::WHITE]
         }
     }
 
