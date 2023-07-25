@@ -41,8 +41,7 @@ pub fn disasm(data: Vec<u8>) -> (Vec<DataType>, Vec<DataType>) {
     let mut stack: [u16; 16] = [0; 16];
     let mut stack_ptr = 0;
 
-    let mut call = false;
-    let mut jump = false;
+    let mut was_jump = false;
 
     loop {
         if cur >= data.len() - 1 { break; }
@@ -74,29 +73,20 @@ pub fn disasm(data: Vec<u8>) -> (Vec<DataType>, Vec<DataType>) {
                 [String::from("(00EE)"), String::from("RET")]
             },
             (0x01, _, _, _) => {
-                cur = nnn - 0x200;
-                jump = true;
+                cur = (nnn - 0x200) - 2;
+                was_jump = true;
                 [format!("(1{:03X})", nnn), format!("JP {:#05X}", nnn)]
             },
             (0x02, _, _, _) => {
                 stack[stack_ptr] = cur as u16;
                 stack_ptr += 1;
-                cur = nnn - 0x200;
-                call = true;
+                cur = (nnn - 0x200) - 2;
+                was_jump = true;
                 [format!("(2{:03X})", nnn), format!("CALL {:#05X}", nnn)]
             }
-            (0x03, _, _, _) => {
-                cur += 2;
-                [format!("(3{:01X}{:02X})", x, nn), format!("SE V{:01X}, {:#04X}", x, nn)]
-            },
-            (0x04, _, _, _) => {
-                cur += 2;
-                [format!("(4{:01X}{:02X})", x, nn), format!("SNE V{:01X}, {:#04X}", x, nn)]
-            },
-            (0x05, _, _, 0x00) => {
-                cur += 2;
-                [format!("(5{:01X}{:01X}0)", x, y), format!("SE V{:01X}, {:01X}", x, y)]
-            },
+            (0x03, _, _, _) => [format!("(3{:01X}{:02X})", x, nn), format!("SE V{:01X}, {:#04X}", x, nn)],
+            (0x04, _, _, _) => [format!("(4{:01X}{:02X})", x, nn), format!("SNE V{:01X}, {:#04X}", x, nn)],
+            (0x05, _, _, 0x00) => [format!("(5{:01X}{:01X}0)", x, y), format!("SE V{:01X}, {:01X}", x, y)],
             (0x06, _, _, _) => [format!("(6{:01X}{:02X})", x, nn), format!("LD V{:01X}, {:#04X}", x, nn)],
             (0x07, _, _, _) => [format!("(7{:01X}{:02X})", x, nn), format!("ADD V{:01X}, {:#04X}", x, nn)],
             (0x08, _, _, 0x00) => [format!("(8{:01X}{:01X}0)", x, y), format!("LD V{:01X}, V{:01X}", x, y)],
@@ -113,14 +103,8 @@ pub fn disasm(data: Vec<u8>) -> (Vec<DataType>, Vec<DataType>) {
             (0x0B, _, _, _) => [format!("(B{:03X})", nnn), format!("JP V0, {:#05X}", nnn)],
             (0x0C, _, _, _) => [format!("(C{:01X}{:02X})", x, nn), format!("RND V{:01X}, {:#04X}", x, nn)],
             (0x0D, _, _, _) => [format!("(D{:01X}{:01X}{:01X})", x, y, n), format!("DRW V{:01X}, V{:01X}, {:#0X}", x, y, n)],
-            (0x0E, _, 0x09, 0x0E) => {
-                cur += 2;
-                [format!("(E{:01X}9E)", x), format!("SKP V{:01X}", x)]
-            },
-            (0x0E, _, 0x0A, 0x01) => {
-                cur += 2;
-                [format!("(E{:01X}A1)", x), format!("SKNP V{:01X}", x)]
-            },
+            (0x0E, _, 0x09, 0x0E) => [format!("(E{:01X}9E)", x), format!("SKP V{:01X}", x)],
+            (0x0E, _, 0x0A, 0x01) => [format!("(E{:01X}A1)", x), format!("SKNP V{:01X}", x)],
             (0x0F, _, 0x00, 0x07) => [format!("(F{:01X}07)", x), format!("LD V{:01X}, DT", x)],
             (0x0F, _, 0x00, 0x0A) => [format!("(F{:01X}0A)", x), format!("LD V{:01X}, K", x)],
             (0x0F, _, 0x01, 0x05) => [format!("(F{:01X}15)", x), format!("LD DT, V{:01X}", x)],
@@ -139,13 +123,11 @@ pub fn disasm(data: Vec<u8>) -> (Vec<DataType>, Vec<DataType>) {
             disassembly[prev + 1] = DataType::SecondByte;
         }
 
-        println!("{}", cur);
-
         cur += 2;
     }
 
-    if call { cur -= 2; call = false; }
-    if jump { cur -= 2; jump = false; }
+    if !was_jump { cur -= 2; }
+    was_jump = false;
 
     let mut completed = Vec::new();
     let mut sprite_data = Vec::new();
@@ -156,7 +138,6 @@ pub fn disasm(data: Vec<u8>) -> (Vec<DataType>, Vec<DataType>) {
             DataType::Data => sprite_data.push(disassembly[i].clone()),
             _ => { }
         }
-        println!("{:?}", disassembly[i]);
     }
 
     return (completed, sprite_data);
