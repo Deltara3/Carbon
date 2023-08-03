@@ -51,12 +51,4 @@ impl Quirk {
             jumping: false
         }
     }
-
-    pub fn load(&mut self) {
-        // implement
-    }
-
-    pub fn save(&mut self) {
-        // implement
-    }
 }
