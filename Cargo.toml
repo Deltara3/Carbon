@@ -7,11 +7,11 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.72"
+rand = "0.8.5"
 # eframe = "0.22.0"
 # egui = "0.22.0"
 # egui-phosphor = { version = "0.2.0", features = ["bold"] }
 # egui_extras = "0.22.0"
 # egui_dock = "0.6.3"
-# rand = "0.8.5"
 # tinyaudio = "0.1.2"
 # rfd = "0.11.4"

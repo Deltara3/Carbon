@@ -4,8 +4,19 @@ use std::fs::File;
 use std::path::PathBuf;
 use std::ffi::OsStr;
 
-pub enum Rom {
+pub mod chip8;
 
+pub enum Rom {
+    Chip8(chip8::Data)
+}
+
+impl Rom {
+    pub fn to_ch8(self) -> Option<chip8::Data> {
+        match self {
+            Rom::Chip8(data) => Some(data),
+            _ => None
+        }
+    }
 }
 
 pub fn raw(location: PathBuf) -> Result<Vec<u8>> {
@@ -32,6 +43,7 @@ pub fn from(location: PathBuf) -> Option<Rom> {
     let raw = raw(location.clone()).ok()?;
 
     match ext {
+        "ch8" => Some(Rom::Chip8(chip8::Data::new(raw))),
         _ => None
     }
 }
