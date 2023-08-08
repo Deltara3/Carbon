@@ -1,5 +1,3 @@
-use anyhow::Result;
+fn main() {
 
-fn main() -> Result<()> {
-    Ok(())
 }
