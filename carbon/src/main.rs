@@ -2,7 +2,7 @@
 extern crate dlopen_derive;
 
 use dlopen::wrapper::{Container, WrapperApi};
-use carbon::*;
+use carbon::{fei::*, box_method};
 
 #[derive(WrapperApi)]
 struct FeiExtension {

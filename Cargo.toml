@@ -1,5 +1,5 @@
 [workspace]
 members = [
     "carbon",
-    "modules/chip8"
+    "modules/crisp"
 ]

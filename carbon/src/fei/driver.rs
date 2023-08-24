@@ -2,5 +2,5 @@
 pub trait Driver {
     fn video(&self);
     fn sound(&self);
-    fn input(&self);
+    fn input(&mut self);
 }
