@@ -1,8 +1,0 @@
-[package]
-name = "carbon"
-version = "1.0.0-beta.1"
-edition = "2021"
-
-[dependencies]
-dlopen = "0.1.8"
-dlopen_derive = "0.1.4"

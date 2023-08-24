@@ -1,6 +1,0 @@
-use super::{Handler, Driver};
-
-/* Will implement core functionality like Netplay */
-pub trait Core: Handler + Driver {
-    fn load(&mut self, data: Vec<u8>);
-}
