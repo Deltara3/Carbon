@@ -1,10 +1,5 @@
 [workspace]
 members = [
-    "app",
+    "carbon",
     "modules/chip8"
-]
-# Excluded for testing modules
-exclude = [
-    "minimal",
-    "api"
 ]
